@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShogiBoardGenerator", "ShogiBoardGenerator.csproj", "{6B461D21-DE50-9FC1-7300-7D3FC849548E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShogiBoardGenerator", "ShogiBoardGenerator.csproj", "{464AF1FC-4BF5-1B52-D5D4-ACE3E996276F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6B461D21-DE50-9FC1-7300-7D3FC849548E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6B461D21-DE50-9FC1-7300-7D3FC849548E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6B461D21-DE50-9FC1-7300-7D3FC849548E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6B461D21-DE50-9FC1-7300-7D3FC849548E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{464AF1FC-4BF5-1B52-D5D4-ACE3E996276F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{464AF1FC-4BF5-1B52-D5D4-ACE3E996276F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{464AF1FC-4BF5-1B52-D5D4-ACE3E996276F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{464AF1FC-4BF5-1B52-D5D4-ACE3E996276F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {96F7903E-8935-4443-B62E-133E5D16F2A6}
+		SolutionGuid = {2227BA50-1619-46F0-BCFE-475F8452D5DC}
 	EndGlobalSection
 EndGlobal
