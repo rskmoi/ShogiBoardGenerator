@@ -88,9 +88,9 @@ public class PlacementInfo
         var compensationY = (status == "Raw") ? this.statusCompensationY : 0.0f;
         var compensationZ = ((turn == "White") == (status == "Raw")) ? this.turnCompensationZ : 0.0f;
 
-        var x = baseX + (suji - 1) * distanceX;
+        var x = baseX + (suji - 1) * distanceX + GetRandomNoiseX();
         var y = baseY + compensationY;
-        var z = baseZ + (dan - 1) * distanceZ + compensationZ;
+        var z = baseZ + (dan - 1) * distanceZ + compensationZ+ GetRandomNoiseZ();
 
         return new Vector3(x, y, z);
     }
@@ -100,6 +100,21 @@ public class PlacementInfo
         var rotationX = (status == "Promoted") ? 0 : 180;
         var rotationY = (turn == "White") ? 0 : 180;
 
-        return Quaternion.Euler(rotationX, rotationY, 0);
+        return Quaternion.Euler(rotationX, rotationY + GetRandomNoiseRotationY(), 0);
+    }
+
+    private float GetRandomNoiseX()
+    {
+        return UnityEngine.Random.Range(-0.1f, 0.1f);
+    }
+
+    private float GetRandomNoiseZ()
+    {
+        return UnityEngine.Random.Range(-0.05f, 0.05f);
+    }
+
+    private float GetRandomNoiseRotationY()
+    {
+        return UnityEngine.Random.Range(-2, 2);
     }
 }

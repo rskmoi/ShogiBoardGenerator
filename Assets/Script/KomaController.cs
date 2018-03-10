@@ -7,13 +7,15 @@ public class KomaController : MonoBehaviour {
     private int count;
     private Placements placements;
     private List<GameObject> komaList;
+    private GameObject lightObj;
   
     // Use this for initialization
     void Start () {
         this.count = 0;
         this.komaList = new List<GameObject>();
+        this.lightObj = GameObject.Find("Directional Light");
 
-        for(int i = 1; i < 3; i++)
+        for (int i = 1; i < 3; i++)
         {
             var strNum = i.ToString().PadLeft(2, '0');
             var ousho = GameObject.Find("OUSHO_" + strNum);
@@ -51,6 +53,10 @@ public class KomaController : MonoBehaviour {
         count++;
         if (count % 50 == 0)
         {
+            var r = Random.Range(0.8f, 1.0f);
+            var g = Random.Range(0.7f, 1.0f);
+            var b = Random.Range(0.5f, 0.9f);
+            this.lightObj.GetComponent<Light>().color = new Color(r, g, b, 1.0f);
             this.placements.MakePlaceRandomly(komaList);
             this.placements.Reset();
         }
