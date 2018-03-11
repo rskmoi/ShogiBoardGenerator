@@ -7,13 +7,12 @@ public class KomaController : MonoBehaviour {
     private int count;
     private Placements placements;
     private List<GameObject> komaList;
-    private GameObject lightObj;
+    private LightManager lightManager;
   
     // Use this for initialization
     void Start () {
         this.count = 0;
         this.komaList = new List<GameObject>();
-        this.lightObj = GameObject.Find("Directional Light");
 
         for (int i = 1; i < 3; i++)
         {
@@ -46,6 +45,8 @@ public class KomaController : MonoBehaviour {
             komaList.Add(fu);
         }
         placements = new Placements();
+
+        this.lightManager = new LightManager();
     }
 
     // Update is called once per frame
@@ -53,12 +54,9 @@ public class KomaController : MonoBehaviour {
         count++;
         if (count % 50 == 0)
         {
-            var r = Random.Range(0.8f, 1.0f);
-            var g = Random.Range(0.7f, 1.0f);
-            var b = Random.Range(0.5f, 0.9f);
-            this.lightObj.GetComponent<Light>().color = new Color(r, g, b, 1.0f);
             this.placements.MakePlaceRandomly(komaList);
             this.placements.Reset();
+            this.lightManager.SetLightRandomly();
         }
     }
 }
