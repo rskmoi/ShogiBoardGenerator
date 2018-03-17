@@ -22,7 +22,7 @@ public class Placements
     /// </summary>
     /// <param name="komanumMax"></param>
     /// <param name="komaList"></param>
-    public void MakePlaceRandomly(List<GameObject>  komaList)
+    public void MakePlaceRandomly(List<GameObject>  komaList, List<RectTransform> windowList)
     {
         ShuffleIndices();
         var komaNum = komaList.Count();
@@ -39,6 +39,7 @@ public class Placements
             {
                 komaList[komaIdx].transform.position = this.placementList[randomIdx].position;
                 komaList[komaIdx].transform.rotation = this.placementList[randomIdx].rotation;
+                windowList[komaIdx].transform.position = CalculateWindowPosition(this.placementList[randomIdx]);
             }
             else if (randomIdx < 88)
             {
@@ -57,12 +58,14 @@ public class Placements
         {
             komaList[item.Key].transform.position = this.placementList[item.Value].position;
             komaList[item.Key].transform.rotation = this.placementList[item.Value].rotation;
+            windowList[item.Key].transform.position = CalculateWindowPosition(this.placementList[item.Value]);
         }
 
         foreach (KeyValuePair<int, int> item in whiteCapturedTable)
         {
             komaList[item.Key].transform.position = this.placementList[item.Value].position;
             komaList[item.Key].transform.rotation = this.placementList[item.Value].rotation;
+            windowList[item.Key].transform.position = CalculateWindowPosition(this.placementList[item.Value]);
         }
     }
 
@@ -239,10 +242,12 @@ public class Placements
 
         var vec = new Vector3(x, y + 0.3f, z);
         var conpensationRotationY = (turn == "Black") ? 180 : 0;
-        var qtn = Quaternion.Euler(rotationX + 180, rotationY + conpensationRotationY, 0);
+        var rot = new Vector3(rotationX + 180, rotationY + conpensationRotationY, 0);
+        var qtn = Quaternion.Euler(rot);
         foreach(int randomIdx in capturedIdxList)
         {
             this.placementList[randomIdx].position = vec;
+            this.placementList[randomIdx].rotation3d = rot;
             this.placementList[randomIdx].rotation = qtn;
             var newX = (x - centerX) * Mathf.Cos(rad18) - (z - centerZ) * Mathf.Sin(rad18) + centerX;
             var newZ = (x - centerX) * Mathf.Sin(rad18) + (z - centerZ) * Mathf.Cos(rad18) + centerZ;
@@ -250,14 +255,16 @@ public class Placements
             z = newZ;
             rotationY -= 18.0f;
             vec = new Vector3(x, y + 0.3f, z);
-            qtn = Quaternion.Euler(rotationX + 180, rotationY + conpensationRotationY, 0);
+            rot = new Vector3(rotationX + 180, rotationY + conpensationRotationY, 0);
+            qtn = Quaternion.Euler(rot);
         }
     }
 
     private void InitializeRandomIndices()
     {
-        this.randomIndices = new int[95];
-        for (int komaIdx = 0; komaIdx < 95; komaIdx++)
+        var placementNum = this.placementList.Count();
+        this.randomIndices = new int[placementNum];
+        for (int komaIdx = 0; komaIdx < placementNum; komaIdx++)
         {
             randomIndices[komaIdx] = komaIdx;
         }
@@ -285,7 +292,7 @@ public class Placements
     {
         foreach(string turn in new List<string> {"Black","White" })
         {
-            for(int i=0; i < 8; i++)
+            for(int i=0; i < 7; i++)
             {
                 var placementInfo = new PlacementInfo(turn);
                 placementList.Add(placementInfo);
@@ -297,5 +304,34 @@ public class Placements
     {
         int randomVal = r.Next(2);
         return (randomVal == 0) ? "Black" : "White";
+    }
+
+    private Vector3 CalculateWindowPosition(PlacementInfo plInfo)
+    {
+        var compensationZ = 0.0f;
+        if (plInfo.Turn == "White" && plInfo.Status == "Promoted")
+        {
+            compensationZ = 0.5f - 1.05f;
+        }
+        else if (plInfo.Turn == "White" && plInfo.Status == "Raw")
+        {
+            compensationZ = 0.5f;
+        }
+        else if (plInfo.Turn == "Black" && plInfo.Status == "Promoted")
+        {
+            compensationZ = -0.5f + 1.05f;
+        }
+        else if (plInfo.Turn == "Black" && plInfo.Status == "Raw")
+        {
+            compensationZ = -0.5f;
+        }
+        else
+        {
+            throw new ArgumentException();
+        }
+
+        var radY = Mathf.Deg2Rad * plInfo.rotation3d.y;
+        var compensationX = 1.0f * Mathf.Sin(radY);
+        return RectTransformUtility.WorldToScreenPoint(Camera.main, plInfo.position - new Vector3(compensationX, 0, compensationZ));
     }
 }

@@ -25,6 +25,7 @@ public class PlacementInfo
     public int dan;
 
     public Vector3 position;
+    public Vector3 rotation3d;
     public Quaternion rotation;
 
     private float baseX = 14.2f;
@@ -47,13 +48,15 @@ public class PlacementInfo
         this.Turn = SetTurn();
         this.Status = SetStatus();
         this.position = CalculatePosition(suji, dan, this.Turn, this.Status);
-        this.rotation = CalculateRotation(this.Turn, this.Status);
+        this.rotation3d = CalculateRotation(this.Turn, this.Status);
+        this.rotation = Quaternion.Euler(this.rotation3d);
     }
 
     public PlacementInfo(string turn)
     {
         this.komaType = "Captured";
         this.Turn = turn;
+        this.Status = "Raw";
     }
 
     public string SetTurn()
@@ -75,7 +78,8 @@ public class PlacementInfo
             this.Turn = SetTurn();
             this.Status = SetStatus();
             this.position = CalculatePosition(this.suji, this.dan, this.Turn, this.Status);
-            this.rotation = CalculateRotation(this.Turn, this.Status);
+            this.rotation3d = CalculateRotation(this.Turn, this.Status);
+            this.rotation = Quaternion.Euler(this.rotation3d);
         }
         else if(this.komaType == "Captured")
         {
@@ -95,12 +99,12 @@ public class PlacementInfo
         return new Vector3(x, y, z);
     }
 
-    private Quaternion CalculateRotation(string turn, string status)
+    private Vector3 CalculateRotation(string turn, string status)
     {
         var rotationX = (status == "Promoted") ? 0 : 180;
         var rotationY = (turn == "White") ? 0 : 180;
 
-        return Quaternion.Euler(rotationX, rotationY + GetRandomNoiseRotationY(), 0);
+        return new Vector3(rotationX, rotationY + GetRandomNoiseRotationY(), 0);
     }
 
     private float GetRandomNoiseX()
