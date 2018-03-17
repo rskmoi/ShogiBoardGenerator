@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using System;
 
 public class KomaController : MonoBehaviour {
     private int count;
     private Placements placements;
-    private List<GameObject> komaList;
-    private List<RectTransform> windowList;
+    private List<Koma> komaList;
     private LightManager lightManager;
   
     // Use this for initialization
     void Start () {
         this.count = 0;
-        this.komaList = new List<GameObject>();
-        this.windowList = new List<RectTransform>();
+        this.komaList = new List<Koma>();
 
         for (int i = 1; i < 3; i++)
         {
@@ -26,12 +25,9 @@ public class KomaController : MonoBehaviour {
             var oushoWindow = GameObject.Find("OUSHO_" + strNum + "_WINDOW").GetComponent<RectTransform>();
             var hishaWindow = GameObject.Find("HISHA_" + strNum + "_WINDOW").GetComponent<RectTransform>();
             var kakuWindow = GameObject.Find("KAKU_" + strNum + "_WINDOW").GetComponent<RectTransform>();
-            this.komaList.Add(ousho);
-            this.komaList.Add(hisha);
-            this.komaList.Add(kaku);
-            this.windowList.Add(oushoWindow);
-            this.windowList.Add(hishaWindow);
-            this.windowList.Add(kakuWindow);
+            this.komaList.Add(new Koma("Ousho", ousho, oushoWindow));
+            this.komaList.Add(new Koma("Hisha", hisha, hishaWindow));
+            this.komaList.Add(new Koma("Kaku", kaku, kakuWindow));
         }
 
         for (int i = 1; i < 5; i++)
@@ -39,20 +35,16 @@ public class KomaController : MonoBehaviour {
             var strNum = i.ToString().PadLeft(2, '0');
             var kin = GameObject.Find("KIN_" + strNum);
             var gin = GameObject.Find("GIN_" + strNum);
-            var kei = GameObject.Find("KEIMA_" + strNum);
-            var kyou = GameObject.Find("KYOSHA_" + strNum);
+            var keima = GameObject.Find("KEIMA_" + strNum);
+            var kyosha = GameObject.Find("KYOSHA_" + strNum);
             var kinWindow = GameObject.Find("KIN_" + strNum + "_WINDOW").GetComponent<RectTransform>();
             var ginWindow = GameObject.Find("GIN_" + strNum + "_WINDOW").GetComponent<RectTransform>();
-            var keiWindow = GameObject.Find("KEIMA_" + strNum + "_WINDOW").GetComponent<RectTransform>();
-            var kyouWindow = GameObject.Find("KYOSHA_" + strNum + "_WINDOW").GetComponent<RectTransform>();
-            this.komaList.Add(kin);
-            this.komaList.Add(gin);
-            this.komaList.Add(kei);
-            this.komaList.Add(kyou);
-            this.windowList.Add(kinWindow);
-            this.windowList.Add(ginWindow);
-            this.windowList.Add(keiWindow);
-            this.windowList.Add(kyouWindow);
+            var keimaWindow = GameObject.Find("KEIMA_" + strNum + "_WINDOW").GetComponent<RectTransform>();
+            var kyoshaWindow = GameObject.Find("KYOSHA_" + strNum + "_WINDOW").GetComponent<RectTransform>();
+            this.komaList.Add(new Koma("Kin", kin, kinWindow));
+            this.komaList.Add(new Koma("Gin", gin, ginWindow));
+            this.komaList.Add(new Koma("Keima", keima, keimaWindow));
+            this.komaList.Add(new Koma("Kyosha", kyosha, kyoshaWindow));
         }
 
         for (int i = 1; i < 19; i++)
@@ -60,18 +52,19 @@ public class KomaController : MonoBehaviour {
             var strNum = i.ToString().PadLeft(2, '0');
             var fu = GameObject.Find("FU_" + strNum);
             var fuWindow = GameObject.Find("FU_" + strNum + "_WINDOW").GetComponent<RectTransform>();
-            this.komaList.Add(fu);
-            this.windowList.Add(fuWindow);
+            this.komaList.Add(new Koma("Fu", fu, fuWindow));
         }
 
-        var showWindow = false;
+        var showWindow = true;
+
         if (!showWindow)
         {
-            foreach (var window in this.windowList)
+            foreach (var koma in this.komaList)
             {
-                window.gameObject.SetActive(false);
+                koma.Window.gameObject.SetActive(false);
             }
         }
+
         this.placements = new Placements();
         this.lightManager = new LightManager();
     }
@@ -81,11 +74,11 @@ public class KomaController : MonoBehaviour {
         count++;
         if (count % 50 == 0)
         {
-            this.placements.MakePlaceRandomly(this.komaList, this.windowList);
+            this.placements.MakePlaceRandomly(this.komaList);
+            var fileName = "C:\\Users\\rei\\Desktop\\anns\\" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            Annotator.Annotate(this.komaList, fileName + ".xml");
             this.placements.Reset();
             this.lightManager.SetLightRandomly();
-
-            // windowObj.SetActive(false);
         }
     }
 }

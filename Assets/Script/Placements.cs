@@ -22,7 +22,7 @@ public class Placements
     /// </summary>
     /// <param name="komanumMax"></param>
     /// <param name="komaList"></param>
-    public void MakePlaceRandomly(List<GameObject>  komaList, List<RectTransform> windowList)
+    public void MakePlaceRandomly(List<Koma> komaList)
     {
         ShuffleIndices();
         var komaNum = komaList.Count();
@@ -37,9 +37,11 @@ public class Placements
             var randomIdx = copiedRandomindices[komaIdx];
             if (randomIdx < 81)
             {
-                komaList[komaIdx].transform.position = this.placementList[randomIdx].position;
-                komaList[komaIdx].transform.rotation = this.placementList[randomIdx].rotation;
-                windowList[komaIdx].transform.position = CalculateWindowPosition(this.placementList[randomIdx]);
+                komaList[komaIdx].SetKomaPosition(this.placementList[randomIdx].position);
+                komaList[komaIdx].SetKomaRotation(this.placementList[randomIdx].rotation);
+                komaList[komaIdx].SetTurn(this.placementList[randomIdx].Turn);
+                komaList[komaIdx].SetStatus(this.placementList[randomIdx].Status);
+                komaList[komaIdx].SetWindowPosition(CalculateWindowPosition(this.placementList[randomIdx]));
             }
             else if (randomIdx < 88)
             {
@@ -56,17 +58,22 @@ public class Placements
 
         foreach (KeyValuePair<int, int> item in blackCapturedTable)
         {
-            komaList[item.Key].transform.position = this.placementList[item.Value].position;
-            komaList[item.Key].transform.rotation = this.placementList[item.Value].rotation;
-            windowList[item.Key].transform.position = CalculateWindowPosition(this.placementList[item.Value]);
+            komaList[item.Key].SetKomaPosition(this.placementList[item.Value].position);
+            komaList[item.Key].SetKomaRotation(this.placementList[item.Value].rotation);
+            komaList[item.Key].SetWindowPosition(CalculateWindowPosition(this.placementList[item.Value]));
         }
 
         foreach (KeyValuePair<int, int> item in whiteCapturedTable)
         {
-            komaList[item.Key].transform.position = this.placementList[item.Value].position;
-            komaList[item.Key].transform.rotation = this.placementList[item.Value].rotation;
-            windowList[item.Key].transform.position = CalculateWindowPosition(this.placementList[item.Value]);
+            komaList[item.Key].SetKomaPosition(this.placementList[item.Value].position);
+            komaList[item.Key].SetKomaRotation(this.placementList[item.Value].rotation);
+            komaList[item.Key].SetWindowPosition(CalculateWindowPosition(this.placementList[item.Value]));
         }
+    }
+
+    public void Annotate(List<RectTransform> windowList)
+    {
+
     }
 
     public void Reset()

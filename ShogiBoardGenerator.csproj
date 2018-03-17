@@ -282,6 +282,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Script\AnnotationModel\BoundingBox.cs" />
+    <Compile Include="Assets\Script\AnnotationModel\KomaAnnotation.cs" />
+    <Compile Include="Assets\Script\AnnotationModel\PictureAnnotation.cs" />
+    <Compile Include="Assets\Script\Annotator.cs" />
+    <Compile Include="Assets\Script\Koma.cs" />
     <Compile Include="Assets\Script\KomaController.cs" />
     <Compile Include="Assets\Script\LightManager.cs" />
     <Compile Include="Assets\Script\PlacementInfo.cs" />
