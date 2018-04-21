@@ -86,7 +86,7 @@ public class Koma
 
     public string GetClassName()
     {
-        return this.turn + this.status + this.Name;
+        return KomaUtil.GetClassName(this.Name, this.turn, this.status);
     }
 
     public void SetTurn(string turn)
@@ -111,25 +111,10 @@ public class Koma
 
     public void SetWindowPosition(Vector3 windowPosition)
     {
-        this.window.transform.position = windowPosition;
-        this.xmin = UIPositionToAnnotationPositionX(windowPosition.x - 23.0f);
-        this.ymin = UIPositionToAnnotationPositionX(windowPosition.y - 23.0f);
-        this.xmax = UIPositionToAnnotationPositionX(windowPosition.x + 23.0f);
-        this.ymax = UIPositionToAnnotationPositionX(windowPosition.y + 23.0f);
+        this.window.position = windowPosition;
+        this.xmin = Mathf.FloorToInt(windowPosition.x - 18.4f);
+        this.ymin = Mathf.FloorToInt(windowPosition.y - 18.4f);
+        this.xmax = Mathf.FloorToInt(windowPosition.x + 18.4f);
+        this.ymax = Mathf.FloorToInt(windowPosition.y + 18.4f);
     }
-
-    private int UIPositionToAnnotationPositionX(float uiPosition)
-    {
-        var ratio = (uiPosition - (-400.0f)) / 800.0f;
-        var annotationPositionX = Mathf.FloorToInt(640.0f * ratio);
-        return annotationPositionX;
-    }
-
-    private int UIPositionToAnnotationPositionY(float uiPosition)
-    {
-        var ratio = (300.0f - uiPosition) / 600.0f;
-        var annotationPositionY = Mathf.FloorToInt(480.0f * ratio);
-        return annotationPositionY;
-    }
-
 }

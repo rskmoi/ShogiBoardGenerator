@@ -55,7 +55,7 @@ public class KomaController : MonoBehaviour {
             this.komaList.Add(new Koma("Fu", fu, fuWindow));
         }
 
-        var showWindow = true;
+        var showWindow = false;
 
         if (!showWindow)
         {
@@ -72,11 +72,14 @@ public class KomaController : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         count++;
-        if (count % 50 == 0)
+        if (count % 10 == 0)
         {
             this.placements.MakePlaceRandomly(this.komaList);
-            var fileName = "C:\\Users\\rei\\Desktop\\anns\\" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
-            Annotator.Annotate(this.komaList, fileName + ".xml");
+            var nowDatetime = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            var annotationFileName = "C:\\Users\\rei\\Desktop\\TrueTrainingData\\annotations\\" + nowDatetime + ".xml";
+            var imageFileName = "C:\\Users\\rei\\Desktop\\TrueTrainingData\\images\\" + nowDatetime + ".png";
+            Annotator.Annotate(this.komaList, annotationFileName);
+            ScreenCapture.CaptureScreenshot(imageFileName);
             this.placements.Reset();
             this.lightManager.SetLightRandomly();
         }

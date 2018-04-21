@@ -90,19 +90,42 @@ public class PlacementInfo
     private Vector3 CalculatePosition(int suji, int dan, string turn, string status)
     {
         var compensationY = (status == "Raw") ? this.statusCompensationY : 0.0f;
-        var compensationZ = ((turn == "White") == (status == "Raw")) ? this.turnCompensationZ : 0.0f;
+
+        var compensationZ = (turn == "White") ? this.turnCompensationZ : 0.0f;
+        
 
         var x = baseX + (suji - 1) * distanceX + GetRandomNoiseX();
         var y = baseY + compensationY;
-        var z = baseZ + (dan - 1) * distanceZ + compensationZ+ GetRandomNoiseZ();
+        var z = baseZ + (dan - 1) * distanceZ + compensationZ + GetRandomNoiseZ();
 
         return new Vector3(x, y, z);
     }
 
     private Vector3 CalculateRotation(string turn, string status)
     {
-        var rotationX = (status == "Promoted") ? 0 : 180;
-        var rotationY = (turn == "White") ? 0 : 180;
+        int rotationX;
+        int rotationY;
+
+        if((status == "Promoted") && (turn == "Black"))
+        {
+            rotationX = 0;
+            rotationY = 0;
+        }
+        else if((status == "Promoted") && (turn == "White"))
+        {
+            rotationX = 0;
+            rotationY = 180;
+        }
+        else if ((status == "Raw") && (turn == "Black"))
+        {
+            rotationX = 180;
+            rotationY = 180;
+        }
+        else
+        {
+            rotationX = 180;
+            rotationY = 0;
+        }
 
         return new Vector3(rotationX, rotationY + GetRandomNoiseRotationY(), 0);
     }

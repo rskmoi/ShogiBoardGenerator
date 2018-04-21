@@ -60,6 +60,8 @@ public class Placements
         {
             komaList[item.Key].SetKomaPosition(this.placementList[item.Value].position);
             komaList[item.Key].SetKomaRotation(this.placementList[item.Value].rotation);
+            komaList[item.Key].SetTurn(this.placementList[item.Value].Turn);
+            komaList[item.Key].SetStatus(this.placementList[item.Value].Status);
             komaList[item.Key].SetWindowPosition(CalculateWindowPosition(this.placementList[item.Value]));
         }
 
@@ -67,6 +69,8 @@ public class Placements
         {
             komaList[item.Key].SetKomaPosition(this.placementList[item.Value].position);
             komaList[item.Key].SetKomaRotation(this.placementList[item.Value].rotation);
+            komaList[item.Key].SetTurn(this.placementList[item.Value].Turn);
+            komaList[item.Key].SetStatus(this.placementList[item.Value].Status);
             komaList[item.Key].SetWindowPosition(CalculateWindowPosition(this.placementList[item.Value]));
         }
     }
@@ -316,21 +320,21 @@ public class Placements
     private Vector3 CalculateWindowPosition(PlacementInfo plInfo)
     {
         var compensationZ = 0.0f;
-        if (plInfo.Turn == "White" && plInfo.Status == "Promoted")
+        if (plInfo.Turn == "Black" && plInfo.Status == "Promoted")
         {
             compensationZ = 0.5f - 1.05f;
-        }
-        else if (plInfo.Turn == "White" && plInfo.Status == "Raw")
-        {
-            compensationZ = 0.5f;
-        }
-        else if (plInfo.Turn == "Black" && plInfo.Status == "Promoted")
-        {
-            compensationZ = -0.5f + 1.05f;
         }
         else if (plInfo.Turn == "Black" && plInfo.Status == "Raw")
         {
             compensationZ = -0.5f;
+        }
+        else if (plInfo.Turn == "White" && plInfo.Status == "Promoted")
+        {
+            compensationZ = -0.5f + 1.05f;
+        }
+        else if (plInfo.Turn == "White" && plInfo.Status == "Raw")
+        {
+            compensationZ = 0.5f;
         }
         else
         {
